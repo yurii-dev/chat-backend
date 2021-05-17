@@ -125,20 +125,24 @@ router.delete(
   })
 );
 
-// find by e-mail
+// find users
 router.get(
   "/find",
   asyncHandler(async (req, res) => {
-    const { email } = req.body.user;
-    if (!validator.validate(email)) {
-      return res.status(400).json({ message: "Bad request" });
+    const { name } = req.body.user;
+    if (!name) {
+      return res.status(400).send();
     }
-    const user = await User.findOne({ email });
-    if (!user || user.id === req.user.id) {
+    const regex = new RegExp(name, "i");
+
+    const users = await User.find({
+      $or: [{ username: { $regex: regex } }, { email: { $regex: regex } }],
+    }).and({ _id: { $ne: req.user.id } });
+    if (!users) {
       return res.status(404).json({ message: "User not found" });
     }
-    const newUser = sendingUserData(user);
-    res.status(200).json({ user: { ...newUser } });
+    const sendingData = users.map((user) => sendingUserData(user));
+    res.status(200).json(sendingData);
   })
 );
 

@@ -75,18 +75,4 @@ router.post(
   })
 );
 
-// //delete dialog ????
-// router.delete(
-//   "/",
-//   asyncHandler(async (req, res) => {
-//     const dialog = await Dialog.findById(req.body.dialogId);
-//     if (dialog) {
-//       await dialog.remove();
-//       res.sendStatus(200);
-//     } else {
-//       res.sendStatus(404);
-//     }
-//   })
-// );
-
 module.exports = router;

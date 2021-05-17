@@ -65,7 +65,6 @@ router.post(
     dialog.lastMessage = message._id;
     await dialog.save();
 
-    // socket
     res.status(201).json(message);
   })
 );

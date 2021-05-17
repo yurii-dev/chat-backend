@@ -47,7 +47,10 @@ router.post(
   "/",
   asyncHandler(async (req, res) => {
     const { text, dialogId, attachments } = req.body.message;
-    if (!dialogId || !text.trim()) {
+    if (!dialogId) {
+      return res.status(400).json({ message: "Invalid data" });
+    }
+    if (!attachments && !text.trim()) {
       return res.status(400).json({ message: "Invalid data" });
     }
     let dialog = await Dialog.findById(dialogId);
@@ -56,7 +59,7 @@ router.post(
     }
 
     const message = new Message({
-      text,
+      text: text ? text : "",
       dialog: dialogId,
       user: req.user.id,
       attachments: attachments ? attachments : null,

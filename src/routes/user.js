@@ -129,7 +129,7 @@ router.delete(
 router.get(
   "/find",
   asyncHandler(async (req, res) => {
-    const { name } = req.body.user;
+    const { name } = JSON.parse(req.query.user);
     if (!name) {
       return res.status(400).send();
     }

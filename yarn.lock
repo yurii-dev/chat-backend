@@ -1549,6 +1549,11 @@ picomatch@^2.0.4, picomatch@^2.2.1:
   resolved "https://registry.yarnpkg.com/picomatch/-/picomatch-2.2.2.tgz#21f333e9b6b8eaff02468f5146ea406d345f4dad"
   integrity sha512-q0M/9eZHzmr0AulXyPwNfZjtwZ/RBZlbN3K3CErVrk50T2ASYI7Bye0EvekFY3IP1Nt2DHu0re+V2ZHIpMkuWg==
 
+pidcrypt@^0.0.32:
+  version "0.0.32"
+  resolved "https://registry.yarnpkg.com/pidcrypt/-/pidcrypt-0.0.32.tgz#19fa2b5ff70c24b777a63329f52b0b54cbd9b037"
+  integrity sha512-9ANc7r5mfKeR3o87xMTIY5ODcmeg78+N1g1Fe3gi/KWKF0zt6YaJVkT3ug9RkL6leRfoL42dIWrHh+c2DTwb8w==
+
 prepend-http@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/prepend-http/-/prepend-http-2.0.0.tgz#e92434bfa5ea8c19f41cdfd401d741a3c819d897"

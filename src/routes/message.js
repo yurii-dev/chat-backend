@@ -2,7 +2,8 @@ const express = require("express"),
   asyncHandler = require("express-async-handler"),
   User = require("../models/User"),
   Dialog = require("../models/Dialog"),
-  Message = require("../models/Message");
+  Message = require("../models/Message"),
+  { encryptText, decryptText } = require("../resourses/messageEncrypting");
 
 const router = express.Router();
 
@@ -35,9 +36,13 @@ router.get(
       return res.status(400).json({ message: "Invalid data" });
     }
     await updateReadStatus(dialogId, req.user.id, next);
-    const messages = await Message.find({
+    let messages = await Message.find({
       dialog: req.body.dialogId,
     }).populate("attachments");
+
+    messages.map((message) => {
+      message.text = decryptText(message.text, dialogId);
+    });
     res.status(200).json({ messages });
   })
 );
@@ -59,7 +64,7 @@ router.post(
     }
 
     const message = new Message({
-      text: text ? text : "",
+      text: text ? encryptText(text, dialogId) : "",
       dialog: dialogId,
       user: req.user.id,
       attachments: attachments ? attachments : null,
@@ -68,7 +73,7 @@ router.post(
     dialog.lastMessage = message._id;
     await dialog.save();
 
-    res.status(201).json(message);
+    res.status(201).send();
   })
 );
 

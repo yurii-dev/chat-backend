@@ -2,7 +2,8 @@ const express = require("express"),
   asyncHandler = require("express-async-handler"),
   User = require("../models/User"),
   Dialog = require("../models/Dialog"),
-  Message = require("../models/Message");
+  Message = require("../models/Message"),
+  { encryptText, decryptText } = require("../resourses/messageEncrypting");
 
 const router = express.Router();
 
@@ -11,7 +12,7 @@ router.get(
   "/",
   asyncHandler(async (req, res) => {
     const userId = req.user.id;
-    const dialogs = await Dialog.find()
+    let dialogs = await Dialog.find()
       .or([{ author: userId }, { partner: userId }])
       .populate({
         path: "author",
@@ -25,6 +26,12 @@ router.get(
         path: "lastMessage",
         select: ["text", "createdAt", "read", "user"],
       });
+    dialogs.map((dialog) => {
+      dialog.lastMessage.text = decryptText(
+        dialog.lastMessage.text,
+        dialog._id
+      );
+    });
     res.status(200).json({ dialogs });
   })
 );
@@ -63,9 +70,10 @@ router.post(
     await dialog.save();
 
     const message = new Message({
-      text,
+      text: text ? encryptText(text, dialog._id) : "",
       dialog: dialog._id,
       user: req.user.id,
+      attachments: null,
     });
 
     await message.save();

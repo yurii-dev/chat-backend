@@ -5,7 +5,6 @@ const express = require("express"),
   auth = require("./middleware/auth");
 
 const isProduction = process.env.NODE_ENV === "production";
-
 // Create global app object
 const app = express();
 

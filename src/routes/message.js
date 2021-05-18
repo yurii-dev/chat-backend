@@ -27,7 +27,7 @@ const updateReadStatus = async (dialogId, userId, next) => {
 router.get(
   "/",
   asyncHandler(async (req, res, next) => {
-    const dialogId = req.body.dialogId;
+    const dialogId = req.query.dialogId;
     if (!dialogId) {
       return res.status(400).json({ message: "Invalid data" });
     }
@@ -37,7 +37,7 @@ router.get(
     }
     await updateReadStatus(dialogId, req.user.id, next);
     let messages = await Message.find({
-      dialog: req.body.dialogId,
+      dialog: dialogId,
     }).populate("attachments");
 
     messages.map((message) => {

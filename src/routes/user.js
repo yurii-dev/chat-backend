@@ -44,7 +44,7 @@ router.post(
     if (!username || username.length < 4) {
       error.username = "Ensure this field has at least 4 characters";
     }
-    if (!password || password.length < 8) {
+    if (!password || password.trim().length < 8) {
       console.log(password);
       error.password = "Ensure this field has at least 8 characters";
     }
@@ -152,16 +152,30 @@ router.patch(
   })
 );
 
-// // edit password
-// router.patch(
-//   "/me/password",
-//   asyncHandler(async (req, res) => {
-//     const { username = null, password = null } = req.body.user;
-//     const me = await User.findById(req.user.id);
+// edit password
+router.patch(
+  "/me/password",
+  asyncHandler(async (req, res) => {
+    const { password = null } = req.body.user;
 
-//     res.sendStatus(200);
-//   })
-// );
+    if (!password) {
+      return res.status(400).json({ message: "Invalid credentials" });
+    }
+    if (password.trim().length < 8) {
+      return res
+        .status(400)
+        .json({ message: "Ensure this field has at least 8 characters" });
+    }
+    const me = await User.findById(req.user.id);
+    if (!me) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    me.password = password;
+    await me.save();
+    res.status(201).send();
+  })
+);
 
 // find users
 router.get(

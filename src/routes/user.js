@@ -41,7 +41,7 @@ router.post(
       error.email = "Incorect e-mail";
     }
 
-    if (!username || username.length < 5) {
+    if (!username || username.length < 4) {
       error.username = "Ensure this field has at least 5 characters";
     }
     if (!password || password.length < 8) {

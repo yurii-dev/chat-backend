@@ -16,7 +16,7 @@ const userSchema = new Schema(
     username: {
       type: String,
       required: [true, "can't be blank"],
-      minlength: 5,
+      minlength: 4,
     },
     password: {
       type: String,

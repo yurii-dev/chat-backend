@@ -87,7 +87,11 @@ router.get(
     if (!user) {
       return res.status(404).json({ error: { message: "Hash not found" } });
     }
+    if (user.confirmed) {
+      return res.status(400).json({ error: { message: "Already confirmed" } });
+    }
     user.confirmed = true;
+    user.confirm_hash = null;
     await user.save();
     res.status(200).send();
   })

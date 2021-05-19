@@ -3,6 +3,8 @@ const express = require("express"),
   { confirmEmail } = require("../resourses/mailer"),
   User = require("../models/User"),
   validator = require("email-validator"),
+  { multerUploads, parser } = require("../middleware/multer"),
+  sharp = require("sharp"),
   { generateImage } = require("../resourses/imageGenerator");
 
 const router = express.Router();
@@ -174,6 +176,33 @@ router.patch(
     me.password = password;
     await me.save();
     res.status(201).send();
+  })
+);
+
+// upload avatar
+router.patch(
+  "/me/avatar",
+  multerUploads.single("avatar"),
+  asyncHandler(async (req, res) => {
+    if (!req.file || !req.file.buffer) {
+      return res.status(400).send("File is not selected");
+    }
+    const buffer = await sharp(req.file.buffer)
+      .resize({
+        width: 40,
+        height: 40,
+      })
+      .toBuffer();
+
+    if (!buffer) return res.status(400).send("Please upload an image");
+    const me = await User.findById(req.user.id);
+    if (!me) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    avatar = `data:image/png;base64,${buffer.toString("base64")}`;
+    me.avatar = avatar;
+    await me.save();
+    res.status(201).json(sendingUserData(me));
   })
 );
 

@@ -3,6 +3,7 @@ const express = require("express"),
   User = require("../models/User"),
   Dialog = require("../models/Dialog"),
   Message = require("../models/Message"),
+  UploadFile = require("../models/UploadFile"),
   { encryptText, decryptText } = require("../resourses/messageEncrypting");
 
 const router = express.Router();
@@ -40,13 +41,23 @@ router.get(
 router.post(
   "/",
   asyncHandler(async (req, res) => {
-    const { partnerId, text } = req.body.dialog;
-    if (!partnerId || !text.trim()) {
+    const {
+      partnerId = null,
+      text = null,
+      attachments = null,
+    } = req.body.dialog;
+    if (!partnerId) {
+      return res.status(400).json({ message: "Invalid data" });
+    }
+    if (!attachments && !text) {
       return res.status(400).json({ message: "Invalid data" });
     }
     const partner = await User.findById(partnerId);
     if (!partner) {
       return res.sendStatus(404);
+    }
+    if (partnerId === req.user.id) {
+      return res.status(400).json({ message: "Invalid data" });
     }
     const isExistOne = await Dialog.findOne({
       author: req.user.id,
@@ -62,6 +73,12 @@ router.post(
       return res.status(400).json({ error: "Dialog is exist" });
     }
 
+    if (attachments) {
+      let attachedFile = await UploadFile.findById(attachments);
+      if (!attachedFile) {
+        return res.status(400).json({ message: "Invalid data" });
+      }
+    }
     const dialog = new Dialog({
       author: req.user.id,
       partner: partner._id,
@@ -73,7 +90,7 @@ router.post(
       text: text ? encryptText(text, dialog._id) : "",
       dialog: dialog._id,
       user: req.user.id,
-      attachments: null,
+      attachments: attachments ? attachments : null,
     });
 
     await message.save();

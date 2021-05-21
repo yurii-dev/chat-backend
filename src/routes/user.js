@@ -6,6 +6,7 @@ const express = require("express"),
   { multerUploads, parser } = require("../middleware/multer"),
   sharp = require("sharp"),
   { generateImage } = require("../resourses/imageGenerator");
+const Dialog = require("../models/Dialog");
 
 const router = express.Router();
 
@@ -216,14 +217,37 @@ router.get(
     }
     const regex = new RegExp(name, "i");
 
-    const users = await User.find({
-      $or: [{ username: { $regex: regex } }, { email: { $regex: regex } }],
-    }).and({ _id: { $ne: req.user.id } });
+    let users = await User.find({
+      username: { $regex: regex },
+    }).and({ _id: { $ne: req.user.id }, confirmed: true });
     if (!users) {
       return res.status(404).json({ message: "User not found" });
     }
-    const sendingData = users.map((user) => sendingUserData(user));
-    res.status(200).json(sendingData);
+
+    let dialogs = await Dialog.find().or([
+      { author: req.user.id },
+      { partner: req.user.id },
+    ]);
+
+    if (dialogs.length > 0) {
+      let knownUsers = [];
+      users.forEach((user) => {
+        dialogs.forEach((dialog) => {
+          if (
+            user._id.toString() === dialog.author.toString() ||
+            user._id.toString() === dialog.partner.toString()
+          ) {
+            knownUsers.push(user);
+          }
+        });
+      });
+      let newUsers = users.filter((user) => !knownUsers.includes(user));
+      const sendingData = newUsers.map((user) => sendingUserData(user));
+      res.status(200).json(sendingData);
+    } else {
+      const sendingData = users.map((user) => sendingUserData(user));
+      res.status(200).json(sendingData);
+    }
   })
 );
 

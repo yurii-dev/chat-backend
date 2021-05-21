@@ -54,10 +54,16 @@ router.post(
     if (Object.keys(error).length > 0) {
       return res.status(400).json({ ...error });
     }
-    const isExistUser = await User.findOne({ email });
-    if (isExistUser) {
+    const isExistUserbyEmail = await User.findOne({ email });
+    if (isExistUserbyEmail) {
       return res.status(400).json({
         email: `The email address ${email} is used by another user`,
+      });
+    }
+    const isExistUserbyUserame = await User.findOne({ username });
+    if (isExistUserbyUserame) {
+      return res.status(400).json({
+        email: `The username:'${username}' is already exist`,
       });
     }
     let user = new User({
@@ -144,6 +150,12 @@ router.patch(
       return res
         .status(400)
         .json({ message: "Ensure this field has at least 4 characters" });
+    }
+    const isExistUserbyUserame = await User.findOne({ username });
+    if (isExistUserbyUserame) {
+      return res.status(400).json({
+        email: `The username:'${username}' is already exist`,
+      });
     }
     const me = await User.findById(req.user.id);
     if (!me) {

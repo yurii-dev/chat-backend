@@ -34,6 +34,8 @@ const userSchema = new Schema(
       default: false,
     },
     confirm_hash: String,
+    reset_password_hash: String,
+    reset_password_date: Date,
   },
   {
     timestamps: true,
@@ -90,7 +92,7 @@ userSchema.pre("save", async function (next) {
   next();
 });
 
-// Generate a confir_hash value
+// Generate a hash
 userSchema.methods.generateHash = async function () {
   return (confirm_hash = await bcrypt.hash(new Date().toISOString(), 8));
 };

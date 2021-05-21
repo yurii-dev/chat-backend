@@ -4,7 +4,8 @@ const auth = (req, res, next) => {
   if (
     req.path === "/users/signin" ||
     req.path === "/users/signup" ||
-    req.path === "/users/verify"
+    req.path === "/users/verify" ||
+    req.path === "/users/forgotpassword"
   ) {
     return next();
   }

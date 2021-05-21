@@ -48,7 +48,6 @@ router.post(
       error.username = "Ensure this field has at least 4 characters";
     }
     if (!password || password.trim().length < 8) {
-      console.log(password);
       error.password = "Ensure this field has at least 8 characters";
     }
     if (Object.keys(error).length > 0) {
@@ -207,7 +206,9 @@ router.patch(
       })
       .toBuffer();
 
-    if (!buffer) return res.status(400).send("Please upload an image");
+    if (!buffer) {
+      return res.status(400).send("Please upload an image");
+    }
     const me = await User.findById(req.user.id);
     if (!me) {
       return res.status(404).json({ message: "User not found" });
@@ -255,11 +256,64 @@ router.get(
       });
       let newUsers = users.filter((user) => !knownUsers.includes(user));
       const sendingData = newUsers.map((user) => sendingUserData(user));
-      res.status(200).json(sendingData);
+      return res.status(200).json(sendingData);
     } else {
       const sendingData = users.map((user) => sendingUserData(user));
-      res.status(200).json(sendingData);
+      return res.status(200).json(sendingData);
     }
+  })
+);
+
+//forgot password, generate hash
+router.get(
+  "/forgotpassword",
+  asyncHandler(async (req, res) => {
+    const { email = null } = req.query;
+    if (!validator.validate(email)) {
+      return res.status(200).send();
+    }
+    const user = await User.findOne().and({ email, confirmed: true });
+    if (!user) {
+      return res.status(200).send();
+    }
+    user.reset_password_hash = await user.generateHash();
+    user.reset_password_date = new Date();
+    // send hash to the ${email} e-mail
+    await user.save();
+    res.status(200).send();
+  })
+);
+
+//forgot password, change password
+router.post(
+  "/forgotpassword",
+  asyncHandler(async (req, res) => {
+    const { token: hash = null } = req.query;
+    const { password = null } = req.body;
+    if (!hash) {
+      return res.status(400).json({ message: "Invalid credentials" });
+    }
+    if (!password || password.trim().length < 8) {
+      return res
+        .status(400)
+        .json({ message: "Ensure this field has at least 8 characters" });
+    }
+    const user = await User.findOne().and({
+      reset_password_hash: hash,
+      confirmed: true,
+    });
+    if (!user) {
+      return res.status(400).json({ message: "User not found" });
+    }
+    let date = new Date().getTime() - 1 * 24 * 60 * 60 * 1000;
+    if (user.reset_password_date < date) {
+      return res.status(400).json({ message: "Time is expired" });
+    }
+    user.password = password;
+    user.reset_password_hash = null;
+    user.reset_password_date = null;
+    await user.save();
+    res.status(201).send();
   })
 );
 

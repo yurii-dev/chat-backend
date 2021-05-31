@@ -96,6 +96,19 @@ userSchema.pre("save", async function (next) {
 userSchema.methods.generateHash = async function () {
   return (confirm_hash = await bcrypt.hash(new Date().toISOString(), 8));
 };
+
+// sending user data
+userSchema.methods.sendingUserData = function () {
+  const newUser = {};
+  newUser.id = this.id;
+  newUser.email = this.email;
+  newUser.username = this.username;
+  newUser.last_seen = this.last_seen;
+  newUser.createdAt = this.createdAt;
+  newUser.avatar = this.avatar;
+  newUser.updatedAt = this.updatedAt;
+  return newUser;
+};
 const User = model("User", userSchema);
 
 module.exports = User;

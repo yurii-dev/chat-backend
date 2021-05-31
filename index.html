@@ -1,16 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
-</head>
-<body>
+  </head>
+  <body>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/3.0.3/socket.io.js"></script>
     <script>
-        var socket = io("http://localhost:5000/");
-            socket.on('TEST', function(msg){
-            console.log("message: ",msg)})
+      var socket = io("http://localhost:5000/");
+          socket.on('TEST', function(msg){
     </script>
-</body>
+  </body>
 </html>

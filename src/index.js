@@ -14,7 +14,7 @@ app.use(cors());
 
 //middlewares
 app.use(auth);
-// app.use(updateLastSeen);
+app.use(updateLastSeen);
 
 // database connection
 require("./db")(mongoose, isProduction);

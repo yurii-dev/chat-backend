@@ -2,7 +2,7 @@ const express = require("express"),
   User = require("../models/User");
 
 const updateLastSeen = async (req, res, next) => {
-  if (req.user) {
+  if (req?.user?.id) {
     const userId = req.user.id;
     await User.findByIdAndUpdate(
       userId,

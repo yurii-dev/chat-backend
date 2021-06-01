@@ -2,8 +2,7 @@ const asyncHandler = require("express-async-handler"),
   User = require("../../models/User");
 
 exports.forgot_password_change = asyncHandler(async (req, res) => {
-  const { token: hash = null } = req.query;
-  const { password = null } = req.body;
+  const { token: hash = null, password = null } = req.body;
 
   if (!hash) {
     return res.status(400).json({ message: "Invalid credentials" });
@@ -11,7 +10,7 @@ exports.forgot_password_change = asyncHandler(async (req, res) => {
   if (!password || password.trim().length < 8) {
     return res
       .status(400)
-      .json({ message: "Ensure this field has at least 8 characters" });
+      .json({ password: "Ensure this field has at least 8 characters" });
   }
   const user = await User.findOne().and({
     reset_password_hash: hash,
@@ -28,5 +27,5 @@ exports.forgot_password_change = asyncHandler(async (req, res) => {
   user.reset_password_hash = null;
   user.reset_password_date = null;
   await user.save();
-  res.status(201).send();
+  res.status(201).json({ message: "Success" });
 });

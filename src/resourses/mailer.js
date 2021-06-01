@@ -1,13 +1,23 @@
-const sgMail = require("@sendgrid/mail");
+const sgMail = require("@sendgrid/mail"),
+  { verify_email_template } = require("./verifyEmailTemplate");
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
+// const confirmEmail = (email, name, hash) => {
+//   sgMail.send({
+//     to: email,
+//     from: "yuriidevac@gmail.com",
+//     subject: "Thanks for joining in!",
+//     text: `Welcome to the app, ${name}.`,
+//     html: `<div>Для того, чтобы подтвердить почту, перейдите <a href="http://localhost:5000/users/verify?hash=${hash}">по этой ссылке</a></div>`,
+//   });
+// };
 const confirmEmail = (email, name, hash) => {
   sgMail.send({
     to: email,
     from: "yuriidevac@gmail.com",
     subject: "Thanks for joining in!",
     text: `Welcome to the app, ${name}.`,
-    html: `<div>Для того, чтобы подтвердить почту, перейдите <a href="http://localhost:5000/users/verify?hash=${hash}">по этой ссылке</a></div>`,
+    html: verify_email_template(hash),
   });
 };
 

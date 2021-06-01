@@ -1,16 +1,10 @@
 const sgMail = require("@sendgrid/mail"),
-  { verify_email_template } = require("./verifyEmailTemplate");
+  { verify_email_template } = require("./emailTemplates/verifyEmailTemplate"),
+  {
+    forgot_password_email_template,
+  } = require("./emailTemplates/forgotPasswordEmailTemplate");
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
-// const confirmEmail = (email, name, hash) => {
-//   sgMail.send({
-//     to: email,
-//     from: "yuriidevac@gmail.com",
-//     subject: "Thanks for joining in!",
-//     text: `Welcome to the app, ${name}.`,
-//     html: `<div>Для того, чтобы подтвердить почту, перейдите <a href="http://localhost:5000/users/verify?hash=${hash}">по этой ссылке</a></div>`,
-//   });
-// };
 const confirmEmail = (email, name, hash) => {
   sgMail.send({
     to: email,
@@ -27,7 +21,7 @@ const resetPasswordEmail = (email, name, hash) => {
     from: "yuriidevac@gmail.com",
     subject: `Hello ${name}`,
     text: `Reset password link`,
-    html: `<div> Reset password form <a href="http://localhost:3000/setpassword?token=${hash}">here</a></div>`,
+    html: forgot_password_email_template(hash),
   });
 };
 module.exports = {

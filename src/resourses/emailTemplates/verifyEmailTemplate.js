@@ -182,7 +182,7 @@ exports.verify_email_template = (hash) => {
                     Welcome!
                   </h1>
                   <img
-                    src="logo.png"
+                    src="../../images/logo.png"
                     width="125"
                     height="120"
                     style="display: block; border: 0px"
@@ -237,7 +237,7 @@ exports.verify_email_template = (hash) => {
                               bgcolor="#2185d0"
                             >
                               <a
-                                href="http://localhost:5000/users/verify?hash=${hash}"
+                                href="${process.env.SERVERURI}users/verify?hash=${hash}"
                                 target="_blank"
                                 style="
                                   font-size: 20px;
@@ -297,7 +297,7 @@ exports.verify_email_template = (hash) => {
                 >
                   <p style="margin: 0">
                     <a href="#" target="_blank" style="color: #2185d0"
-                      >http://localhost:5000/users/verify?hash=${hash}</a
+                      >${process.env.SERVERURI}users/verify?hash=${hash}</a
                     >
                   </p>
                 </td>

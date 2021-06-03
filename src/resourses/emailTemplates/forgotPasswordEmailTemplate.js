@@ -182,7 +182,7 @@ exports.forgot_password_email_template = (hash) => {
                     Password Reset
                   </h1>
                   <img
-                    src="logo.png"
+                    src="../../images/logo.png"
                     width="125"
                     height="120"
                     style="display: block; border: 0px"
@@ -236,7 +236,7 @@ exports.forgot_password_email_template = (hash) => {
                               bgcolor="#2185d0"
                             >
                               <a
-                                href="http://localhost:3000/setpassword?token=${hash}"
+                                href="${process.env.UIURI}setpassword?token=${hash}"
                                 target="_blank"
                                 style="
                                   font-size: 20px;
@@ -296,7 +296,7 @@ exports.forgot_password_email_template = (hash) => {
                 >
                   <p style="margin: 0">
                     <a href="#" target="_blank" style="color: #2185d0"
-                      >http://localhost:3000/setpassword?token=${hash}</a
+                      >${process.env.UIURI}setpassword?token=${hash}</a
                     >
                   </p>
                 </td>

@@ -16,5 +16,5 @@ exports.verify = asyncHandler(async (req, res) => {
   user.confirmed = true;
   user.confirm_hash = null;
   await user.save();
-  res.status(200).send();
+  res.status(200).redirect(`${process.env.UIURI}login`);
 });

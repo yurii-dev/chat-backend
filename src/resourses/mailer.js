@@ -19,8 +19,7 @@ const resetPasswordEmail = (email, name, hash) => {
   sgMail.send({
     to: email,
     from: "yuriidevac@gmail.com",
-    subject: `Hello ${name}`,
-    text: `Reset password link`,
+    subject: `Reset password link`,
     html: forgot_password_email_template(hash),
   });
 };

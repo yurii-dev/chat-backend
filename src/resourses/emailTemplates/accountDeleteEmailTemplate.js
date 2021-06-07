@@ -1,4 +1,4 @@
-exports.forgot_password_email_template = (hash) => {
+exports.account_delete_email_template = () => {
   return `<!DOCTYPE html>
   <html>
     <head>
@@ -7,7 +7,7 @@ exports.forgot_password_email_template = (hash) => {
       <meta name="viewport" content="width=device-width, initial-scale=1" />
       <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     </head>
-  
+
     <body
       style="
         background-color: #f4f4f4;
@@ -29,10 +29,9 @@ exports.forgot_password_email_template = (hash) => {
           overflow: hidden;
         "
       >
-        Reset password
+        We're sorry to see you go.
       </div>
       <table border="0" cellpadding="0" cellspacing="0" width="100%">
-        <!-- LOGO -->
         <tr>
           <td bgcolor="#2185d0" align="center">
             <table
@@ -46,7 +45,7 @@ exports.forgot_password_email_template = (hash) => {
                 <td
                   align="center"
                   valign="top"
-                  style="padding: 20px 10px 20px 10px"
+                  style="padding: 40px 10px 40px 10px"
                 ></td>
               </tr>
             </table>
@@ -78,7 +77,7 @@ exports.forgot_password_email_template = (hash) => {
                   "
                 >
                   <h1 style="font-size: 48px; font-weight: 400; margin: 2">
-                    Password Reset
+                    Account Deleted
                   </h1>
                 </td>
               </tr>
@@ -102,57 +101,18 @@ exports.forgot_password_email_template = (hash) => {
                     padding: 20px 30px 10px 30px;
                     color: #666666;
                     font-family: 'Lato', Helvetica, Arial, sans-serif;
-                    font-size: 18px;
+                    font-size: 24px;
                     font-weight: 400;
-                    line-height: 25px;
+                    line-height: 15px;
+                    text-align:center;
                   "
                 >
                   <p style="margin: 0">
-                    If you've lost your password or wish to reset it, use the link below to get started.
+                    We're sorry to see you go.
                   </p>
                 </td>
               </tr>
-              <tr>
-                <td bgcolor="#ffffff" align="left">
-                  <table width="100%" border="0" cellspacing="0" cellpadding="0">
-                    <tr>
-                      <td
-                        bgcolor="#ffffff"
-                        align="center"
-                        style="padding: 20px 30px 20px 30px"
-                      >
-                        <table border="0" cellspacing="0" cellpadding="0">
-                          <tr>
-                            <td
-                              align="center"
-                              style="border-radius: 3px"
-                              bgcolor="#2185d0"
-                            >
-                              <a
-                                href="${process.env.UIURI}setpassword?token=${hash}"
-                                target="_blank"
-                                style="
-                                  font-size: 20px;
-                                  font-family: Helvetica, Arial, sans-serif;
-                                  color: #ffffff;
-                                  text-decoration: none;
-                                  color: #ffffff;
-                                  text-decoration: none;
-                                  padding: 15px 25px;
-                                  border-radius: 2px;
-                                  border: 1px solid #2185d0;
-                                  display: inline-block;
-                                "
-                                >Reset Your Password</a>
-                            </td>
-                          </tr>
-                        </table>
-                      </td>
-                    </tr>
-                  </table>
-                </td>
-              </tr>
-              <!-- COPY -->
+              
               <tr>
                 <td
                   bgcolor="#ffffff"
@@ -166,33 +126,12 @@ exports.forgot_password_email_template = (hash) => {
                     line-height: 25px;
                   "
                 >
-                  <p style="margin: 0">
-                    If that doesn't work, copy and paste the following link in
-                    your browser:
+                  <p style="margin: 0"><br/>
+                    Your account has been deleted successfully.
                   </p>
                 </td>
               </tr>
-              <!-- COPY -->
-              <tr>
-                <td
-                  bgcolor="#ffffff"
-                  align="left"
-                  style="
-                    padding: 20px 30px 20px 30px;
-                    color: #666666;
-                    font-family: 'Lato', Helvetica, Arial, sans-serif;
-                    font-size: 18px;
-                    font-weight: 400;
-                    line-height: 25px;
-                  "
-                >
-                  <p style="margin: 0">
-                    <a href="#" target="_blank" style="color: #2185d0"
-                      >${process.env.UIURI}setpassword?token=${hash}</a
-                    >
-                  </p>
-                </td>
-              </tr>
+  
               <tr>
                 <td
                   bgcolor="#ffffff"
@@ -206,8 +145,9 @@ exports.forgot_password_email_template = (hash) => {
                     line-height: 25px;
                   "
                 >
-                  <p style="margin: 0">
-                    If you did not request a password reset, you can safely ignore this email. Only a person with access to your email can reset your account password.
+                  <p style="margin: 0"><br/>
+                    If you have any questions, just reply to this email—we're
+                    always happy to help out.
                   </p>
                 </td>
               </tr>

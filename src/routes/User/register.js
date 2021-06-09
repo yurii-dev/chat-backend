@@ -40,6 +40,6 @@ exports.register = asyncHandler(async (req, res) => {
   user.confirm_hash = await user.generateHash();
   user.avatar = await generateImage(username);
   await user.save();
-  confirmEmail(user.email, user.username, user.confirm_hash);
+  confirmEmail(user.email, user.confirm_hash);
   res.status(200).send();
 });

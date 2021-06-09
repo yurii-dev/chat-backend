@@ -14,7 +14,7 @@ exports.forgot_password_hash = asyncHandler(async (req, res) => {
   }
   user.reset_password_hash = await user.generateHash();
   user.reset_password_date = new Date();
-  resetPasswordEmail(user.email, user.username, user.reset_password_hash);
+  resetPasswordEmail(user.email, user.reset_password_hash);
   await user.save();
   return res.status(200).json({ message: "success" });
 });

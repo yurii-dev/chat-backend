@@ -21,5 +21,8 @@ exports.my_dialogs = asyncHandler(async (req, res) => {
   dialogs.map((dialog) => {
     dialog.lastMessage.text = decryptText(dialog.lastMessage.text, dialog._id);
   });
+
+  dialogs.sort((a, b) => new Date(b.lastMessage.createdAt).getTime() - new Date(a.lastMessage.createdAt).getTime());
+
   res.status(200).json({ dialogs });
 });

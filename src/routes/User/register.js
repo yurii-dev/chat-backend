@@ -6,7 +6,7 @@ const asyncHandler = require("express-async-handler"),
 
 exports.register = asyncHandler(async (req, res) => {
   let error = {};
-  const { username, password, email } = req.body.user;
+  const { username = null, password = null, email = null } = req.body.user;
   if (!validator.validate(email)) {
     error.email = "Incorect e-mail";
   }

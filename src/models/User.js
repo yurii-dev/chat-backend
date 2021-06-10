@@ -59,13 +59,9 @@ userSchema.statics.findByCredentials = async (email, password, next) => {
 
 // generation of token
 userSchema.methods.generateJWT = function () {
-  return jwt.sign(
-    { id: this._id, username: this.username, email: this.email },
-    process.env.SECRET_KEY,
-    {
-      expiresIn: "1 day",
-    }
-  );
+  return jwt.sign({ id: this._id, username: this.username, email: this.email }, process.env.SECRET_KEY, {
+    expiresIn: "1 day",
+  });
 };
 
 // data for sendind to client
@@ -73,7 +69,6 @@ userSchema.methods.toAuthJSON = function () {
   return {
     id: this.id,
     username: this.username,
-    email: this.email,
     last_seen: this.last_seen,
     createdAt: this.createdAt,
     avatar: this.avatar,
@@ -101,7 +96,6 @@ userSchema.methods.generateHash = async function () {
 userSchema.methods.sendingUserData = function () {
   const newUser = {};
   newUser.id = this.id;
-  newUser.email = this.email;
   newUser.username = this.username;
   newUser.last_seen = this.last_seen;
   newUser.createdAt = this.createdAt;

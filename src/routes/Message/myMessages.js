@@ -16,12 +16,10 @@ exports.my_messages = asyncHandler(async (req, res, next) => {
   await updateReadStatus(dialogId, req.user.id, next);
   let messages = await Message.find({
     dialog: dialogId,
-  })
-    .populate("attachments")
-    .populate({
-      path: "user",
-      select: ["avatar"],
-    });
+  }).populate({
+    path: "user",
+    select: ["avatar"],
+  });
 
   messages.map((message) => {
     message.text = decryptText(message.text, dialogId);

@@ -9,7 +9,7 @@ const messageSchema = new Schema(
       type: Boolean,
       default: false,
     },
-    attachments: { type: Schema.Types.ObjectId, ref: "UploadFile" },
+    attachments: [String],
   },
   {
     timestamps: true,

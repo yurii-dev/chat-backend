@@ -8,11 +8,11 @@ exports.my_dialogs = asyncHandler(async (req, res) => {
     .or([{ author: userId }, { partner: userId }])
     .populate({
       path: "author",
-      select: ["email", "username", "avatar", "last_seen"],
+      select: ["username", "avatar", "last_seen"],
     })
     .populate({
       path: "partner",
-      select: ["email", "username", "avatar", "last_seen"],
+      select: ["username", "avatar", "last_seen"],
     })
     .populate({
       path: "lastMessage",

@@ -3,7 +3,11 @@ const asyncHandler = require("express-async-handler"),
   Message = require("../../models/Message");
 
 exports.delete_message = asyncHandler(async (req, res) => {
-  let message = await Message.findById(req.body.messageId);
+  const { messageId = null } = req.body;
+  if (!messageId) {
+    return res.status(400).json({ message: "Invalid data" });
+  }
+  let message = await Message.findById(messageId);
   if (!message) {
     return res.status(404).json({ message: "Message not found" });
   }
@@ -13,11 +17,7 @@ exports.delete_message = asyncHandler(async (req, res) => {
   }
   const dialogId = message.dialog;
   await message.remove();
-  let lastMessage = await Message.findOne(
-    { dialog: dialogId },
-    {},
-    { sort: { createdAt: -1 } }
-  );
+  let lastMessage = await Message.findOne({ dialog: dialogId }, {}, { sort: { createdAt: -1 } });
   const dialog = await Dialog.findById(dialogId);
   if (!dialog) {
     return res.status(404).json({ message: "Dialog not found" });

@@ -1,6 +1,4 @@
 const express = require("express"),
-  sharp = require("sharp"),
-  { multerUploads } = require("../../middleware/multer"),
   { about_me } = require("./aboutMe"),
   { register } = require("./register"),
   { verify } = require("./verify"),
@@ -37,7 +35,7 @@ router.patch("/me/username", edit_username);
 router.patch("/me/password", edit_password);
 
 // upload avatar
-router.patch("/me/avatar", multerUploads.single("avatar"), upload_avatar);
+router.patch("/me/avatar", upload_avatar);
 
 // find users
 router.get("/find", find_users);

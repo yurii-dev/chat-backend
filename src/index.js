@@ -23,7 +23,6 @@ require("./db")(mongoose, isProduction);
 require("./models/User");
 require("./models/Dialog");
 require("./models/Message");
-require("./models/UploadFile");
 
 //routes
 app.use(require("./routes"));

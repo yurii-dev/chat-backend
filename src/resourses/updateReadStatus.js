@@ -2,13 +2,17 @@ const Message = require("../models/Message");
 
 exports.updateReadStatus = async (dialogId, userId, next) => {
   try {
-    await Message.updateMany(
+    await Message.update(
       {
         dialog: dialogId,
         user: { $ne: userId },
+        read: false,
       },
       {
         $set: { read: true },
+      },
+      {
+        multi: true,
       }
     );
   } catch (error) {

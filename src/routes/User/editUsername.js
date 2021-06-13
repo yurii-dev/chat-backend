@@ -7,14 +7,12 @@ exports.edit_username = asyncHandler(async (req, res) => {
     return res.status(400).json({ message: "Invalid credentials" });
   }
   if (username.length < 4) {
-    return res
-      .status(400)
-      .json({ message: "Ensure this field has at least 4 characters" });
+    return res.status(400).json({ message: "Ensure this field has at least 4 characters" });
   }
   const isExistUserbyUserame = await User.findOne({ username });
   if (isExistUserbyUserame) {
     return res.status(400).json({
-      email: `The username:'${username}' is already exist`,
+      email: `The username:'${username}' is used by another user.`,
     });
   }
   const me = await User.findById(req.user.id);

@@ -1,28 +1,22 @@
 const { model, Schema } = require("mongoose"),
   bcrypt = require("bcryptjs"),
-  { isEmail } = require("validator"),
   jwt = require("jsonwebtoken");
 
 const userSchema = new Schema(
   {
     email: {
       type: String,
-      required: [true, "can't be blank"],
       trim: true,
       lowercase: true,
-      unique: true,
-      validate: [isEmail, "Invalid e-mail address"],
+      default: "",
     },
     username: {
       type: String,
-      required: [true, "can't be blank"],
-      minlength: 4,
-      unique: true,
+      default: "",
     },
     password: {
       type: String,
-      required: [true, "can't be blank"],
-      minlength: 8,
+      default: "",
     },
     avatar: String,
     last_seen: {
@@ -81,7 +75,7 @@ userSchema.methods.toAuthJSON = function () {
 userSchema.pre("save", async function (next) {
   const user = this;
 
-  if (user.isModified("password")) {
+  if (user.isModified("password") && user.password !== "") {
     user.password = await bcrypt.hash(user.password, 8);
   }
   next();
